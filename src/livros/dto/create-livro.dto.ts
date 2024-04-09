@@ -1,7 +1,12 @@
-import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString, Min } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Min,
+} from 'class-validator';
 
 export class CreateLivroDto {
-
   @IsNotEmpty()
   @IsString()
   titulo: string;
@@ -24,16 +29,12 @@ export class CreateLivroDto {
   paginas: number;
 
   @IsNotEmpty()
-  @IsString()
-  genero: string;
+  @IsString({ each: true })
+  generos: string[];
 
   @IsNotEmpty()
   @IsString()
   sinopse: string;
-
-  @IsNotEmpty()
-  @IsBoolean()
-  emprestado: boolean;
 
   @IsOptional()
   @IsNumber()

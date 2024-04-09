@@ -9,7 +9,7 @@ export class LivroEntity implements Livro {
   editora: string;
   ano: number;
   paginas: number;
-  genero: string;
+  generos: string;
   sinopse: string;
   emprestado: boolean;
   idUsuario: number;
