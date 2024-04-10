@@ -5,6 +5,7 @@ export class UsuarioEntity implements Usuario {
   nome: string;
   email: string;
   senha: string;
+  role: string;
   createdAt: Date;
   updatedAt: Date;
 }

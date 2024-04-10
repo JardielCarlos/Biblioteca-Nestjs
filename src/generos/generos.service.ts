@@ -5,10 +5,17 @@ import { UpdateGeneroDto } from './dto/update-genero.dto';
 
 @Injectable()
 export class GenerosService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(private readonly prismaService: PrismaService) { }
 
   create(createGeneroDto: CreateGeneroDto) {
-    return this.prismaService.genero.create({ data: { ...createGeneroDto, nome: createGeneroDto.nome.charAt(0).toUpperCase() + createGeneroDto.nome.slice(1).toLowerCase() } });
+    return this.prismaService.genero.create({
+      data: {
+        ...createGeneroDto,
+        nome:
+          createGeneroDto.nome.charAt(0).toUpperCase() +
+          createGeneroDto.nome.slice(1).toLowerCase(),
+      },
+    });
   }
 
   findAll() {

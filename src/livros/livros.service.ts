@@ -5,29 +5,29 @@ import { UpdateLivroDto } from './dto/update-livro.dto';
 
 @Injectable()
 export class LivrosService {
-  constructor(private readonly prismaService: PrismaService) { }
+  constructor(private readonly prismaService: PrismaService) {}
 
   async create(createLivroDto: CreateLivroDto) {
     const generos = await Promise.all(
-      createLivroDto.generos.map((genero) => this.preloadGeneroByName(genero))
+      createLivroDto.generos.map((genero) => this.preloadGeneroByName(genero)),
     );
 
     return this.prismaService.livro.create({
       data: {
         ...createLivroDto,
         generos: {
-          create: generos.map(genero => ({
+          create: generos.map((genero) => ({
             generoId: genero.id,
-          }))
-        }
+          })),
+        },
       },
       include: {
         generos: {
           select: {
             genero: true,
-          }
-        }
-      }
+          },
+        },
+      },
     });
   }
 
@@ -37,9 +37,9 @@ export class LivrosService {
         generos: {
           select: {
             genero: true,
-          }
-        }
-      }
+          },
+        },
+      },
     });
   }
 
@@ -55,10 +55,10 @@ export class LivrosService {
       include: {
         generos: {
           select: {
-            genero: true
-          }
-        }
-      }
+            genero: true,
+          },
+        },
+      },
     });
 
     if (!livro) {
@@ -69,14 +69,17 @@ export class LivrosService {
 
     if (updateLivroDto.generos) {
       const generos = await Promise.all(
-        updateLivroDto.generos.map((genero) => this.preloadGeneroByName(genero))
+        updateLivroDto.generos.map((genero) =>
+          this.preloadGeneroByName(genero),
+        ),
       );
 
       const generosNaoPresentes = generos.filter(
-        gen => !livro.generos.some(livroGen => livroGen.genero.nome === gen.nome)
+        (gen) =>
+          !livro.generos.some((livroGen) => livroGen.genero.nome === gen.nome),
       );
 
-      generosParaAdicionar = generosNaoPresentes.map(genero => ({
+      generosParaAdicionar = generosNaoPresentes.map((genero) => ({
         generoId: genero.id,
       }));
     }
@@ -109,11 +112,15 @@ export class LivrosService {
 
   private async preloadGeneroByName(genero: string) {
     const existingGenero = await this.prismaService.genero.findFirst({
-      where: { nome: genero }
+      where: { nome: genero },
     });
 
     if (!existingGenero) {
-      return await this.prismaService.genero.create({ data: { nome: genero.charAt(0).toUpperCase() + genero.slice(1).toLowerCase() } });
+      return await this.prismaService.genero.create({
+        data: {
+          nome: genero.charAt(0).toUpperCase() + genero.slice(1).toLowerCase(),
+        },
+      });
     }
 
     return existingGenero;

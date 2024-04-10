@@ -7,14 +7,16 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateGeneroDto } from './dto/create-genero.dto';
 import { UpdateGeneroDto } from './dto/update-genero.dto';
 import { GenerosService } from './generos.service';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('generos')
 export class GenerosController {
-  constructor(private readonly generosService: GenerosService) { }
+  constructor(private readonly generosService: GenerosService) {}
 
   @Post()
   create(@Body() createGeneroDto: CreateGeneroDto) {
@@ -22,6 +24,7 @@ export class GenerosController {
   }
 
   @Get()
+  @UseGuards(AuthGuard('jwt'))
   findAll() {
     return this.generosService.findAll();
   }
