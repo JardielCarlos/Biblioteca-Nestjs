@@ -13,6 +13,7 @@ import { CreateGeneroDto } from './dto/create-genero.dto';
 import { UpdateGeneroDto } from './dto/update-genero.dto';
 import { GenerosService } from './generos.service';
 import { AuthGuard } from '@nestjs/passport';
+import { AdminGuard } from 'src/auth/guards/admin-guard';
 
 @Controller('generos')
 export class GenerosController {
@@ -24,7 +25,7 @@ export class GenerosController {
   }
 
   @Get()
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), AdminGuard)
   findAll() {
     return this.generosService.findAll();
   }
